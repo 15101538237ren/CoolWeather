@@ -13,17 +13,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.ListView;
 
 /**
- * ½«³£ÓÃµÄÊı¾İ¿â²Ù×÷·â×°ÆğÀ´
+ * å°†å¸¸ç”¨çš„æ•°æ®åº“æ“ä½œå°è£…èµ·æ¥
  * @author Harry
  *
  */
 public class CoolWeatherDB {
 	/**
-	 * Êı¾İ¿âÃû
+	 * æ•°æ®åº“å
 	 */
 	public static final String DB_NAME="cool_weather";
 	/**
-	 * Êı¾İ¿â°æ±¾
+	 * æ•°æ®åº“ç‰ˆæœ¬
 	 */
 	public static final int VERSION=1;
 	
@@ -32,8 +32,8 @@ public class CoolWeatherDB {
 	private SQLiteDatabase db;
 	
 	/**
-	 * ½«¹¹Ôì·½·¨Ë½ÓĞ»¯
-	 * @param context ÉÏÏÂÎÄ¶ÔÏó
+	 * å°†æ„é€ æ–¹æ³•ç§æœ‰åŒ–
+	 * @param context ä¸Šä¸‹æ–‡å¯¹è±¡
 	 */
 	private CoolWeatherDB(Context context) {
 		// TODO Auto-generated constructor stub
@@ -42,7 +42,7 @@ public class CoolWeatherDB {
 	}
 	
 	/**
-	 * »ñÈ¡CoolWeatherDBÊµÀı
+	 * è·å–CoolWeatherDBå®ä¾‹
 	 * @param context
 	 * @return
 	 */
@@ -54,7 +54,7 @@ public class CoolWeatherDB {
 		return coolWeatherDB;
 	}
 	/**
-	 * ½«ProvinceÊµÀı´æ´¢µ½Êı¾İ¿â
+	 * å°†Provinceå®ä¾‹å­˜å‚¨åˆ°æ•°æ®åº“
 	 * @param province
 	 */
 	public void saveProvince(Province province) {
@@ -67,7 +67,7 @@ public class CoolWeatherDB {
 		}
 	}
 	/**
-	 * ´ÓÊı¾İ¿â¶ÁÈ¡È«¹úËùÓĞÊ¡·İĞÅÏ¢
+	 * ä»æ•°æ®åº“è¯»å–å…¨å›½æ‰€æœ‰çœä»½ä¿¡æ¯
 	 * @return
 	 */
 	public List<Province> loadProvinces() {
@@ -86,7 +86,7 @@ public class CoolWeatherDB {
 		return list;
 	}
 	/**
-	 * ½«CityÊµÀı±£´æµ½Êı¾İ¿â
+	 * å°†Cityå®ä¾‹ä¿å­˜åˆ°æ•°æ®åº“
 	 * @param city
 	 */
 	public void saveCity(City city)
@@ -102,7 +102,7 @@ public class CoolWeatherDB {
 	}
 	
 	/**
-	 * ´ÓÊı¾İ¿â¶ÁÈ¡Ä³Ê¡ËùÓĞ³ÇÊĞĞÅÏ¢
+	 * ä»æ•°æ®åº“è¯»å–æŸçœæ‰€æœ‰åŸå¸‚ä¿¡æ¯
 	 * @return
 	 */
 	public List<City> loadCitys(int provinceId) {
@@ -123,7 +123,7 @@ public class CoolWeatherDB {
 	}
 	
 	/**
-	 * ½«CountyÊµÀı±£´æµ½Êı¾İ¿â
+	 * å°†Countyå®ä¾‹ä¿å­˜åˆ°æ•°æ®åº“
 	 * @param county
 	 */
 	public void saveCounty(County county)
@@ -139,12 +139,12 @@ public class CoolWeatherDB {
 	}
 	
 	/**
-	 * ´ÓÊı¾İ¿â¶ÁÈ¡Ä³ÊĞËùÓĞÏØµÄĞÅÏ¢
+	 * ä»æ•°æ®åº“è¯»å–æŸå¸‚æ‰€æœ‰å¿çš„ä¿¡æ¯
 	 * @return
 	 */
 	public List<County> loadCountys(int countyId) {
 		List<County> list=new ArrayList<County>();
-		Cursor cursor=db.query("County", null, "county_id = ?", new String []{String.valueOf(countyId)}, null, null, null);
+		Cursor cursor=db.query("County", null, "city_id = ?", new String []{String.valueOf(countyId)}, null, null, null);
 		if(cursor.moveToFirst())
 		{
 			do {
