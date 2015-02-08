@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import util.LogUtil;
+import util.ToastUtil;
 
 import com.coolweather.app.R;
 
@@ -137,7 +138,7 @@ public class ChooseAreaActivity extends Activity {
 			}
 		});
 		queryProvinces();
-		Toast.makeText(this, "省信息查询完毕", Toast.LENGTH_SHORT).show();
+		ToastUtil.makeText(this, "省信息查询完毕", Toast.LENGTH_SHORT);
 		
 	}
 	/**
@@ -203,7 +204,7 @@ public class ChooseAreaActivity extends Activity {
 			for (City city : cityList) {
 				dataList.add(city.getCityName());
 			}
-			//Toast.makeText(this, "市信息查询完毕", Toast.LENGTH_SHORT).show();
+			ToastUtil.makeText(this, "市信息查询完毕", Toast.LENGTH_SHORT);
 			adapter.notifyDataSetChanged();
 			listView.setSelection(0);
 			titleText.setText(selectedProvince.getProvinceName());
@@ -261,7 +262,7 @@ public class ChooseAreaActivity extends Activity {
 			for (County county : countyList) {
 				dataList.add(county.getCountyName());
 			}
-			//Toast.makeText(this, "市"+selectedCity.getCityName()+"的县信息查询完毕！", Toast.LENGTH_SHORT).show();
+			ToastUtil.makeText(this, "市"+selectedCity.getCityName()+"的县信息查询完毕！", Toast.LENGTH_SHORT);
 			adapter.notifyDataSetChanged();
 			listView.setSelection(0);
 			titleText.setText(selectedCity.getCityName());
