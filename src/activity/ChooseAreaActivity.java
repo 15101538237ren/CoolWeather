@@ -25,10 +25,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,12 +71,15 @@ public class ChooseAreaActivity extends Activity {
 	 * 选中的市
 	 */
 	private City selectedCity;
-	
 	/**
 	 * 当前选中的级别
 	 */
 	private int currentLevel;
 	
+	/**
+	 * 是否从WeatherActivity中跳转
+	 */
+	private boolean isFromWeatherActivity=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -82,7 +87,8 @@ public class ChooseAreaActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
 		Boolean city_selected=prefs.getBoolean("city_selected", false);
-		if(city_selected==true)
+		isFromWeatherActivity=getIntent().getBooleanExtra("from_weather_activity", false);
+		if(city_selected==true&& !isFromWeatherActivity)
 		{
 			Intent intent= new Intent(this,WeatherActivity.class);
 			startActivity(intent);
@@ -92,6 +98,7 @@ public class ChooseAreaActivity extends Activity {
 		setContentView(R.layout.choose_area);
 		listView=(ListView)findViewById(R.id.list_view);
 		titleText=(TextView)findViewById(R.id.title_text);
+		
 		adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,dataList);
 		listView.setAdapter(adapter);
 		
@@ -333,6 +340,11 @@ public class ChooseAreaActivity extends Activity {
 			queryProvinces();
 		}
 		else {
+			if(isFromWeatherActivity)
+			{
+				Intent intent=new Intent(this,WeatherActivity.class);
+				startActivity(intent);
+			}
 			finish();
 		}
 	}
