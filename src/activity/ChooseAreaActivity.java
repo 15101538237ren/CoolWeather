@@ -16,10 +16,14 @@ import model.County;
 import model.Province;
 
 import db.CoolWeatherDB;
+import android.R.bool;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -76,8 +80,16 @@ public class ChooseAreaActivity extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
+		Boolean city_selected=prefs.getBoolean("city_selected", false);
+		if(city_selected==true)
+		{
+			Intent intent= new Intent(this,WeatherActivity.class);
+			startActivity(intent);
+			finish();
+			return;
+		}
 		setContentView(R.layout.choose_area);
-		
 		listView=(ListView)findViewById(R.id.list_view);
 		titleText=(TextView)findViewById(R.id.title_text);
 		adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,dataList);
@@ -98,12 +110,28 @@ public class ChooseAreaActivity extends Activity {
 				}
 				else if (currentLevel==LEVEL_CITY) {
 					selectedCity=cityList.get(position);
-					queryCounties();
+					boolean result =queryCounties();
+					if(!result)
+					{
+						String cityCode=cityList.get(position).getCityCode();
+						Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+						intent.putExtra("county_code", cityCode);
+						startActivity(intent);
+						finish();
+					}
+				}
+				else if (currentLevel==LEVEL_COUNTY) {
+					String countyCode=countyList.get(position).getCountyCode();
+					Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+					intent.putExtra("county_code", countyCode);
+					startActivity(intent);
+					finish();
 				}
 			}
 		});
 		queryProvinces();
 		Toast.makeText(this, "省信息查询完毕", Toast.LENGTH_SHORT).show();
+		
 	}
 	/**
 	 * 查询全国的所有省,优先从数据库查询,如果没有从本地文件获取
@@ -216,8 +244,9 @@ public class ChooseAreaActivity extends Activity {
 	/**
 	 * 查询选中城市的所有县,优先从数据库查询,如果没有从本地文件获取
 	 */
-	private void queryCounties() {
+	private boolean queryCounties() {
 		showProgressDialog();
+		boolean flag=false;
 		countyList=coolWeatherDB.loadCountys(selectedCity.getId());
 		if(countyList!=null&&countyList.size()>0)
 		{
@@ -237,7 +266,6 @@ public class ChooseAreaActivity extends Activity {
 			cityCode=cityCode.substring(0,cityCode.length()-2);
 			Pattern p=Pattern.compile("("+cityCode+")"+"([0-9]{2})=([^\\r\\n]+)");
 			Matcher m =null;
-			boolean flag=false;
 			try{ 
 				InputStreamReader inputReader = new InputStreamReader( getResources().getAssets().open(fileName) ); 
 	            BufferedReader reader = new BufferedReader(inputReader);
@@ -271,6 +299,7 @@ public class ChooseAreaActivity extends Activity {
 			}
 		}
 		closeProgressDialog();
+		return flag;
 	}
 	/**
 	 * 显示进度对话框
