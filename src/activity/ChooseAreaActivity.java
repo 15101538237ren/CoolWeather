@@ -2,11 +2,12 @@ package activity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import util.LogUtil;
 
 import com.coolweather.app.R;
 
@@ -15,15 +16,10 @@ import model.County;
 import model.Province;
 
 import db.CoolWeatherDB;
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -146,7 +142,7 @@ public class ChooseAreaActivity extends Activity {
             	 		province.setProvinceName(provinceName);
             	 		province.setProvinceCode(provinceCode);
             	 		coolWeatherDB.saveProvince(province);
-            	 		Log.d("ChooseAreaActivity", "province:"+provinceName+",id:"+provinceCode);
+            	 		LogUtil.d("ChooseAreaActivity", "province:"+provinceName+",id:"+provinceCode);
 	            }
 	          }
 	        reader.close();
@@ -181,7 +177,7 @@ public class ChooseAreaActivity extends Activity {
 		else {
 			String fileName="cities.txt";
 			String cityCode=selectedProvince.getProvinceCode();
-			Log.d("CityCodeBefore",cityCode);
+			LogUtil.d("CityCodeBefore",cityCode);
 			cityCode=cityCode.substring(0,cityCode.length()-4);
 			Pattern p=Pattern.compile("("+cityCode+")"+"([0-9]{4})=([^\\r\\n]+)");
 			Matcher m =null;
@@ -203,7 +199,7 @@ public class ChooseAreaActivity extends Activity {
             	 		String provinceCode=cityCode.substring(0, cityCode.length()-4)+"0100";
             	 		city.setProvinceId(selectedProvince.getId());
             	 		coolWeatherDB.saveCity(city);
-            	 		Log.d("ChooseAreaActivity", "city:"+cityName+",id:"+cityCode+",provinceCode:"+provinceCode);
+            	 		LogUtil.d("ChooseAreaActivity", "city:"+cityName+",id:"+cityCode+",provinceCode:"+provinceCode);
 	                }
 	            }
 	            reader.close();
@@ -260,7 +256,7 @@ public class ChooseAreaActivity extends Activity {
 						county.setCountyCode(cityCode+countyCode);
 						county.setCityId(selectedCity.getId());
 						coolWeatherDB.saveCounty(county);
-						Log.d("ChooseAreaActivity", "county:"+countyName+",id:"+countyCode+",cityCode:"+cityCode);
+						LogUtil.d("ChooseAreaActivity", "county:"+countyName+",id:"+countyCode+",cityCode:"+cityCode);
 						flag=true;
 	                }
 	            }
